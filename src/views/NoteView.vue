@@ -27,7 +27,7 @@ watch(notes, () => {
 .main {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 40px;
 }
 
 .title {
@@ -43,6 +43,5 @@ watch(notes, () => {
   align-items: center;
   gap: 15px;
   width: 100%;
-  margin-inline: center;
 }
 </style>

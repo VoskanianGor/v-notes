@@ -1,33 +1,55 @@
 <script setup lang="ts">
-import { defineProps, ref, watch } from "vue";
+import { defineProps, ref } from "vue";
 import TrashIcon from "~components/icons/TrashIcon.vue";
-import type { ITodo } from "~interfaces/i-note";
+import type { ITodo } from "~interfaces/i-todo";
 import { useNoteStore } from "~stores/notes";
+import CheckIcon from "./icons/CheckIcon.vue";
+import PencilIcon from "./icons/PencilIcon.vue";
 
 interface IProps {
   todo: ITodo;
   noteId: number;
-  controls?: boolean;
+  isEdit?: boolean;
 }
 
 const { todo, noteId } = defineProps<IProps>();
 const { removeTodo } = useNoteStore();
+
+const isTodoEdit = ref(false);
+const toggleIsTodoEdit = () => {
+  isTodoEdit.value = !isTodoEdit.value;
+};
 </script>
 
 <template>
   <div class="todo">
-    <h2 class="title" :class="{ done: todo.completed }">
+    <input
+      v-if="isEdit"
+      class="checkbox"
+      type="checkbox"
+      name="checkbox"
+      id="checkbox"
+      v-model="todo.completed"
+    />
+    <input
+      v-if="isTodoEdit"
+      class="title edit"
+      type="text"
+      v-model="todo.title"
+    />
+    <h2 v-else class="title" :class="{ done: todo.completed }">
       {{ todo.title }}
     </h2>
-    <div class="controls" v-if="controls">
-      <input
-        class="checkbox"
-        type="checkbox"
-        name="checkbox"
-        id="checkbox"
-        v-model="todo.completed"
-      />
-      <button class="delete" @click="removeTodo(noteId, todo.id)">
+    <div class="controls">
+      <button v-if="isEdit" class="control" @click="toggleIsTodoEdit">
+        <PencilIcon v-if="!isTodoEdit" />
+        <CheckIcon v-else />
+      </button>
+      <button
+        v-if="isEdit"
+        class="control delete"
+        @click="removeTodo(noteId, todo.id)"
+      >
         <TrashIcon />
       </button>
     </div>
@@ -59,6 +81,11 @@ const { removeTodo } = useNoteStore();
   white-space: nowrap;
   overflow: hidden;
 
+  &.edit {
+    background-color: transparent;
+    border: none;
+  }
+
   &.done {
     text-decoration: line-through;
     opacity: 0.5;
@@ -68,14 +95,20 @@ const { removeTodo } = useNoteStore();
 .controls {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 7px;
 }
 
-.delete {
+.control {
   display: flex;
   cursor: pointer;
   transition: $transition;
 
+  &:hover {
+    color: $c-accent;
+  }
+}
+
+.delete {
   &:hover {
     color: $c-error;
   }

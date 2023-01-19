@@ -1,26 +1,17 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
+import type { INote } from "~interfaces/i-note";
 import CrossIcon from "./icons/CrossIcon.vue";
 import EditIcon from "./icons/EditIcon.vue";
 import Todo from "./Todo.vue";
 
-interface INote {
-  id: number;
-  title: string;
-  todos?: {
-    id: number;
-    title: string;
-    completed: boolean;
-  }[];
-}
-
 interface INoteProps {
   note: INote;
-  controls?: boolean;
+  isEdit?: boolean;
 }
 
 withDefaults(defineProps<INoteProps>(), {
-  controls: true,
+  isEdit: false,
 });
 
 const deleteNote = () => {
@@ -32,9 +23,10 @@ const deleteNote = () => {
   <section class="note">
     <div class="heading">
       <h2 class="title">{{ note.title }}</h2>
-      <div class="controls" v-if="controls">
+      <div class="controls">
         <RouterLink
           class="control"
+          v-if="!isEdit"
           :to="{ name: 'edit', params: { id: note.id } }"
         >
           <EditIcon />
@@ -50,7 +42,7 @@ const deleteNote = () => {
       :key="todo.id"
       :todo="todo"
       :noteId="note.id"
-      :controls="true"
+      :isEdit="isEdit"
     />
   </section>
 </template>
@@ -75,8 +67,10 @@ const deleteNote = () => {
   padding: 15px;
   border-radius: 10px;
   width: min(100%, 400px);
+  transition: $transition;
 
   &:hover {
+    box-shadow: 0 0 15px 0 var(--green4);
     .controls {
       opacity: 1;
     }

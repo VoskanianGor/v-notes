@@ -6,10 +6,24 @@ import Header from "~components/Header.vue";
 <template>
   <Header />
 
-  <RouterView />
+  <RouterView v-slot="{ Component, route }">
+    <Transition name="fade" mode="out-in">
+      <component :is="Component" />
+    </Transition>
+  </RouterView>
 </template>
 
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.3s;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(-50%);
+}
+
 header {
   line-height: 1.5;
   max-height: 100vh;

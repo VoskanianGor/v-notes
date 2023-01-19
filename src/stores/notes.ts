@@ -1,18 +1,8 @@
 import { defineStore } from "pinia";
 import { ref, watch } from "vue";
+import type { INote } from "~interfaces/i-note";
+import type { ITodo } from "~interfaces/i-todo";
 import { getLocal, setLocal } from "~utils/local-storage";
-
-export interface ITodo {
-  id: number;
-  title: string;
-  completed: boolean;
-}
-
-export interface INote {
-  id: number;
-  title: string;
-  todos?: ITodo[];
-}
 
 const initialNotes = getLocal<INote[]>("notes") || [
   {
@@ -23,6 +13,11 @@ const initialNotes = getLocal<INote[]>("notes") || [
         id: 1,
         title: "Todo 1",
         completed: true,
+      },
+      {
+        id: 2,
+        title: "React",
+        completed: false,
       },
     ],
   },

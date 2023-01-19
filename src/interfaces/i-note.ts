@@ -1,14 +1,7 @@
-export interface INote {
-  title: string;
-  todos?: {
-    id: number;
-    title: string;
-    completed: boolean;
-  }[];
-}
+import type { ITodo } from "./i-todo";
 
-export interface ITodo {
+export interface INote {
   id: number;
   title: string;
-  completed: boolean;
+  todos?: ITodo[];
 }
