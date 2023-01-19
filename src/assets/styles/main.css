@@ -1,0 +1,18 @@
+@import "./colors.css";
+@import "./base.css";
+
+#app {
+  width: min(100% - 30px, clamp(320px, 88.2vw, 1440px));
+  margin-inline: auto;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
