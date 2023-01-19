@@ -29,6 +29,9 @@
       "~router/*": [
         "./src/router/*"
       ],
+      "~hooks/*": [
+        "./src/hooks/*"
+      ],
     }
   },
   "references": [

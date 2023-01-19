@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { defineProps } from "vue";
+import { defineProps, ref, Teleport } from "vue";
+import { RouterLink } from "vue-router";
 import type { INote } from "~interfaces/i-note";
 import CrossIcon from "./icons/CrossIcon.vue";
 import EditIcon from "./icons/EditIcon.vue";
 import Todo from "./Todo.vue";
+import Modal from "./Modal.vue";
 
 interface INoteProps {
   note: INote;
@@ -15,8 +17,11 @@ withDefaults(defineProps<INoteProps>(), {
 });
 
 const deleteNote = () => {
+  showModal.value = true;
   console.log("delete");
 };
+
+const showModal = ref(false);
 </script>
 
 <template>
@@ -45,6 +50,14 @@ const deleteNote = () => {
       :isEdit="isEdit"
     />
   </section>
+
+  <Teleport to="#modals">
+    <Modal :show="showModal" @close="showModal = false">
+      <template #header>
+        <h3>custom header</h3>
+      </template>
+    </Modal>
+  </Teleport>
 </template>
 
 <style scoped lang="scss">
