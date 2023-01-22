@@ -1,7 +1,7 @@
 import type { ITodo } from "./i-todo";
 
 export interface INote {
-  id: number;
+  id: string;
   title: string;
   todos?: ITodo[];
 }

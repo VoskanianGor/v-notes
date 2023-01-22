@@ -1,21 +1,16 @@
 <script setup lang="ts">
-import { computed, watch } from "vue";
+import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import ArrowLeft from "~components/icons/ArrowLeft.vue";
 import Note from "~components/Note.vue";
 import { useNoteStore } from "~stores/notes";
-import { setLocal } from "~utils/local-storage";
 
 const { notes } = useNoteStore();
 const { back } = useRouter();
 const { params } = useRoute();
 const noteId = computed(() => params.id);
 
-const note = computed(() => notes.find((note) => note.id === +noteId.value));
-
-watch(notes, () => {
-  setLocal("notes", notes);
-});
+const note = computed(() => notes.find((note) => note.id === noteId.value));
 </script>
 
 <template>
@@ -42,5 +37,6 @@ watch(notes, () => {
 .back {
   width: 40px;
   height: 40px;
+  color: $c-text-secondary;
 }
 </style>

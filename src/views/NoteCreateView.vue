@@ -1,20 +1,16 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { useNoteStore } from "~stores/notes";
-import { setLocal } from "~utils/local-storage";
+import { nanoid } from "nanoid";
 
-const { addNote, notes } = useNoteStore();
-
-watch(notes, () => {
-  setLocal("notes", notes);
-});
+const { addNote } = useNoteStore();
 
 const title = ref("");
 const onSubmit = (e: Event) => {
   e.preventDefault();
 
   addNote({
-    id: Date.now(),
+    id: nanoid(),
     title: title.value,
     todos: [],
   });

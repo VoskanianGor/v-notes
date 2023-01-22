@@ -1,27 +1,31 @@
 <script setup lang="ts">
-import { defineProps, ref, Teleport } from "vue";
+import { defineProps, ref } from "vue";
 import { RouterLink } from "vue-router";
 import type { INote } from "~interfaces/i-note";
+import Button from "./ui/Button.vue";
 import CrossIcon from "./icons/CrossIcon.vue";
 import EditIcon from "./icons/EditIcon.vue";
 import Todo from "./Todo.vue";
-import Modal from "./Modal.vue";
+import ConfirmModal from "./ConfirmModal.vue";
+import { useNoteStore } from "~stores/notes";
+import { useConfirmDialog } from "@vueuse/core";
 
 interface INoteProps {
   note: INote;
   isEdit?: boolean;
 }
 
-withDefaults(defineProps<INoteProps>(), {
+const { note } = withDefaults(defineProps<INoteProps>(), {
   isEdit: false,
 });
 
-const deleteNote = () => {
-  showModal.value = true;
-  console.log("delete");
-};
+const { isRevealed, reveal, cancel, confirm } = useConfirmDialog();
+const { removeNote } = useNoteStore();
 
-const showModal = ref(false);
+const onConfirmDelete = () => {
+  removeNote(note.id);
+  confirm();
+};
 </script>
 
 <template>
@@ -29,14 +33,10 @@ const showModal = ref(false);
     <div class="heading">
       <h2 class="title">{{ note.title }}</h2>
       <div class="controls">
-        <RouterLink
-          class="control"
-          v-if="!isEdit"
-          :to="{ name: 'edit', params: { id: note.id } }"
-        >
+        <RouterLink class="control" v-if="!isEdit" :to="'/edit/' + note.id">
           <EditIcon />
         </RouterLink>
-        <button class="control delete" @click="deleteNote">
+        <button class="control delete" @click="reveal">
           <CrossIcon />
         </button>
       </div>
@@ -51,13 +51,12 @@ const showModal = ref(false);
     />
   </section>
 
-  <Teleport to="#modals">
-    <Modal :show="showModal" @close="showModal = false">
-      <template #header>
-        <h3>custom header</h3>
-      </template>
-    </Modal>
-  </Teleport>
+  <ConfirmModal
+    :show="isRevealed"
+    :onConfirm="onConfirmDelete"
+    :onCancel="cancel"
+    :onClose="cancel"
+  />
 </template>
 
 <style scoped lang="scss">
@@ -72,6 +71,7 @@ const showModal = ref(false);
   white-space: nowrap;
   overflow: hidden;
 }
+
 .note {
   display: flex;
   flex-direction: column;

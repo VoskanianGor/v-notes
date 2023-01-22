@@ -1,20 +1,24 @@
 <script setup lang="ts">
 import MENU from "~router/menu";
+import ThemeToggler from "./ThemeToggler.vue";
 </script>
 
 <template>
   <header class="header">
     <RouterLink to="/" class="logo">📝 v-note</RouterLink>
-    <nav class="navigation">
-      <RouterLink
-        class="link"
-        v-for="{ name, path } in MENU"
-        :key="name"
-        :to="path"
-      >
-        {{ name }}
-      </RouterLink>
-    </nav>
+    <div class="navigation__wrapper">
+      <nav class="navigation">
+        <RouterLink
+          class="link"
+          v-for="{ name, path } in MENU"
+          :key="name"
+          :to="path"
+        >
+          {{ name }}
+        </RouterLink>
+      </nav>
+      <ThemeToggler />
+    </div>
   </header>
 </template>
 
@@ -27,6 +31,12 @@ import MENU from "~router/menu";
   align-items: center;
   padding: 15px 0;
   margin-bottom: 30px;
+}
+
+.navigation__wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 .logo {

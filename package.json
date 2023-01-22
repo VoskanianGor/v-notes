@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@radix-ui/colors": "^0.1.8",
+    "@vueuse/core": "^9.11.1",
+    "nanoid": "^4.0.0",
     "pinia": "^2.0.28",
     "sass": "^1.57.1",
     "vue": "^3.2.45",

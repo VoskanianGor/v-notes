@@ -8,7 +8,7 @@ import PencilIcon from "./icons/PencilIcon.vue";
 
 interface IProps {
   todo: ITodo;
-  noteId: number;
+  noteId: string;
   isEdit?: boolean;
 }
 
@@ -102,6 +102,7 @@ const toggleIsTodoEdit = () => {
   display: flex;
   cursor: pointer;
   transition: $transition;
+  color: $c-text-secondary;
 
   &:hover {
     color: $c-accent;
